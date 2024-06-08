@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maga Tunnel VPN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMUMLZ4jq9U8KsZyI6/gU0p5TChlzUO8N0S7T4" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f0f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      color: #3498db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+    .speed-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .speed-info span {
+      margin: 0 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .speed-info i {
+      font-size: 24px;
+      color: #3498db;
+    }
+    #serverList {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 20px;
+      background-color: #fff;
+    }
+    #serverList option {
+      padding: 5px 10px;
+      background-color: #fff;
+      color: #000;
+      display: flex;
+      align-items: center;
+    }
+    .flag {
+      width: 20px;
+      height: 15px;
+      margin-right: 10px;
+    }
+    #connectBtn {
+      border-radius: 50%;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      padding: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    #connectBtn:hover {
+      background-color: #2980b9;
+    }
+    .status-message {
+      font-weight: bold;
+      color: #333;
+      margin-top: 20px;
+    }
+    .connected {
+      background-color: #2ecc71 !important;
+    }
+    .sidebar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #3498db;
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+    .sidebar.active {
+      transform: translateX(0);
+    }
+    .menu-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      z-index: 3;
+    }
+    .menu-bar {
+      width: 35px;
+      height: 5px;
+      background-color: #333;
+      margin: 6px 0;
+      transition: 0.4s;
+    }
+    .sidebar-options {
+      margin-top: 50px;
+      color: white;
+      font-size: 18px;
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar-options li {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <img src="https://via.placeholder.com/60" alt="Logo" class="logo">
+      Maga Tunnel VPN
+    </h1>
+    <div class="speed-info">
+      <i class="fas fa-download"></i>
+      <span id="downloadSpeed">0 Mbps</span>
+      <i class="fas fa-upload"></i>
+      <span id="uploadSpeed">0 Mbps</span>
+    </div>
+    <form id="vpnForm">
+      <select id="serverList">
+        <optgroup label="Europe">
+          <option value="uk" class="option"><img src="https://flagcdn.com/16x12/gb.png" class="flag" alt="UK Flag">United Kingdom</option>
+          <option value="fr" class="option"><img src="https://flagcdn.com/16x12/fr.png" class="flag" alt="France Flag">France</option>
+          <option value="de" class="option"><img src="https://flagcdn.com/16x12/de.png" class="flag" alt="Germany Flag">Germany</option>
+          <option value="it" class="option"><img src="https://flagcdn.com/16x12/it.png" class="flag" alt="Italy Flag">Italy</option>
+          <option value="es" class="option"><img src="https://flagcdn.com/16x12/es.png" class="flag" alt="Spain Flag">Spain</option>
+        </optgroup>
+        <optgroup label="America">
+          <option value="us" class="option"><img src="https://flagcdn.com/16x12/us.png" class="flag" alt="US Flag">United States</option>
+          <option value="ca" class="option"><img src="https://flagcdn.com/16x12/ca.png" class="flag" alt="Canada Flag">Canada</option>
+          <option value="mx" class="option"><img src="https://flagcdn.com/16x12/mx.png" class="flag" alt="Mexico Flag">Mexico</option>
+          <option value="br" class="option"><img src="https://flagcdn.com/16x12/br.png" class="flag" alt="Brazil Flag">Brazil</option>
+          <option value="ar" class="option"><img src="https://flagcdn.com/16x12/ar.png" class="flag" alt="Argentina Flag">Argentina</option>
+        </optgroup>
+        <optgroup label="Africa">
+          <option value="za" class="option"><img src="https://flagcdn.com/16x12/za.png" class="flag" alt="South Africa Flag">South Africa</option>
+          <option value="ng" class="option"><img src="https://flagcdn.com/16x12/ng.png" class="flag" alt="Nigeria Flag">Nigeria</option>
+          <option value="ke" class="option"><img src="https://flagcdn.com/16x12/ke.png" class="flag" alt="Kenya Flag">Kenya</option>
+          <option value="eg" class="option"><img src="https://flagcdn.com/16x12/eg.png" class="flag" alt="Egypt Flag">Egypt</option>
+          <option value="dz" class="option"><img src="https://flagcdn.com/16x12/dz.png" class="flag" alt="Algeria Flag">Algeria</option>
+        </optgroup>
+      </select>
+      <button type="submit" id="connectBtn">Connect</button>
+    </form>
+    <div id="status" class="status-message"></div>
+  </div>
+
+  <div class="menu-btn" onclick="toggleSidebar()">
+    <div class="menu-bar"></div>
+    <div class="menu-bar"></div>
+    <div class="menu-bar"></div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <ul class="sidebar-options">
+      <li>Update</li>
+      <li>Exit App</li>
+      <li>Tweaks</li>
+    </ul>
+  </div>
+
+  <script>
+    document.getElementById("vpnForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      var serverAddress = document.getElementById("serverList").value;
+
+      // Simulate connection process
+      document.getElementById("status").innerText = "Connecting to " + serverAddress + "...";
+      var connectBtn = document.getElementById("connectBtn");
+      connectBtn.disabled = true;
+      connectBtn.classList.add("connected");
+      connectBtn.innerText = "Connecting...";
+
+      setTimeout(function() {
+        document.getElementById("status").innerText = "Connected to " + serverAddress;
+        connectBtn.disabled = false;
+        connectBtn.classList.remove("connected");
+        connectBtn.innerText = "Connected";
+
+        // Start updating speed values every second
+        updateSpeeds();
+      }, 2000); // Simulate 2 seconds connection time
+    });
+
+    function updateSpeeds() {
+      setInterval(function() {
+        var downloadSpeed = Math.floor(Math.random() * 100) + 10; // Random download speed between 10 and 110 Mbps
+        var uploadSpeed = Math.floor(Math.random() * 50) + 5; // Random upload speed between 5 and 55 Mbps
+        document.getElementById("downloadSpeed").innerText = downloadSpeed + " Mbps";
+        document.getElementById("uploadSpeed").innerText = uploadSpeed + " Mbps";
+      }, 1000); // Update speeds every second
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+
+    document.addEventListener("click", function(event) {
+      var isClickInsideSidebar = document.getElementById("sidebar").contains(event.target);
+      var isClickInsideMenuBtn = document.querySelector(".menu-btn").contains(event.target);
+
+      if (!isClickInsideSidebar && !isClickInsideMenuBtn) {
+        document.getElementById("sidebar").classList.remove("active");
+      }
+    });
+  </script>
+</body>
+</html>
